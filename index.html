@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lá Thư Tạm Biệt Cô Наталья</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:wght@400;700&family=Roboto:wght@300;400&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #ffe4f3, #ffb6e6, #ff9ed9);
+            min-height: 100vh;
+            overflow: hidden;
+            position: relative;
+            color: #4a2c4a;
+        }
+
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+        }
+
+        .flags {
+            font-size: 28px;
+            cursor: default;
+        }
+
+        .title {
+            font-family: 'Great Vibes', cursive;
+            font-size: 32px;
+            color: #c026d3;
+            text-shadow: 2px 2px 8px rgba(192, 38, 211, 0.3);
+        }
+
+        .tabs {
+            position: fixed;
+            top: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+            z-index: 90;
+            background: rgba(255,255,255,0.9);
+            padding: 8px 15px;
+            border-radius: 50px;
+            box-shadow: 0 4px 15px rgba(192, 38, 211, 0.2);
+        }
+
+        .tab {
+            padding: 10px 25px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            color: #c026d3;
+        }
+
+        .tab.active {
+            background: #ff69b4;
+            color: white;
+            box-shadow: 0 4px 12px rgba(255, 105, 180, 0.4);
+        }
+
+        .envelope-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 320px;
+            height: 280px;
+            cursor: pointer;
+            z-index: 10;
+        }
+
+        .envelope {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(#ff1493, #db2777);
+            border-radius: 10px 10px 80px 10px;
+            position: relative;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
+            transition: transform 0.4s ease;
+        }
+
+        .envelope:hover {
+            transform: scale(1.08) rotate(3deg);
+        }
+
+        .envelope::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 50%;
+            background: linear-gradient(transparent, rgba(255,255,255,0.4));
+            clip-path: polygon(50% 100%, 0 0, 100% 0);
+            z-index: 2;
+        }
+
+        .heart-icon {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 90px;
+            color: white;
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.8);
+            transition: all 0.3s ease;
+            z-index: 3;
+        }
+
+        .letter {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -60%);
+            width: 90%;
+            max-width: 620px;
+            background: white;
+            border-radius: 15px;
+            padding: 50px 60px;
+            box-shadow: 0 20px 60px rgba(192, 38, 211, 0.3);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+            z-index: 50;
+            max-height: 85vh;
+            overflow-y: auto;
+        }
+
+        .letter.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translate(-50%, -50%);
+        }
+
+        .letter h1 {
+            font-family: 'Great Vibes', cursive;
+            font-size: 42px;
+            color: #c026d3;
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 3px solid #ffb6e6;
+            padding-bottom: 15px;
+        }
+
+        .letter .content {
+            font-size: 18px;
+            line-height: 1.8;
+            color: #4a2c4a;
+            text-align: justify;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 25px;
+            font-size: 28px;
+            color: #c026d3;
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: all 0.3s;
+        }
+
+        .close-btn:hover {
+            background: #ffe4f3;
+        }
+
+        .hearts-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 20;
+            overflow: hidden;
+        }
+
+        .heart {
+            position: absolute;
+            font-size: 25px;
+            color: #ff1493;
+            opacity: 0.9;
+            animation: floatHeart linear forwards;
+            text-shadow: 0 0 8px rgba(255, 20, 147, 0.6);
+        }
+
+        @keyframes floatHeart {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0.9;
+            }
+            100% {
+                transform: translateY(-100px) rotate(25deg);
+                opacity: 0;
+            }
+        }
+
+        .footer {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 14px;
+            color: #c026d3;
+            opacity: 0.7;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <div class="flags">
+            🇷🇺 &nbsp; 🇻🇳
+        </div>
+        <div class="title">Lá Thư Tạm Biệt</div>
+        <div style="width: 50px;"></div>
+    </div>
+
+    <!-- Tabs -->
+    <div class="tabs">
+        <div class="tab active" data-lang="vi">🇻🇳 Tiếng Việt</div>
+        <div class="tab" data-lang="ru">🇷🇺 Tiếng Nga</div>
+        <div class="tab" data-lang="en">🇬🇧 English</div>
+    </div>
+
+    <!-- Envelope -->
+    <div class="envelope-container" id="envelope">
+        <div class="envelope">
+            <div class="heart-icon">💌</div>
+        </div>
+    </div>
+
+    <!-- Hearts Container -->
+    <div class="hearts-container" id="hearts"></div>
+
+    <!-- Letter VI -->
+    <div class="letter" id="letter-vi">
+        <div class="close-btn" onclick="closeLetter()">×</div>
+        <h1>Lá Thư Tạm Biệt</h1>
+        <div class="content">
+            <p><strong>Thân gửi cô Наталья Лисоченко,</strong></p>
+            <br>
+            <p>Hôm nay là một ngày thật buồn đối với chúng em khi phải nói lời tạm biệt cô. Khoảng thời gian cô ở đây, dạy chúng em tiếng Nga, đã trở thành những kỷ niệm vô cùng quý giá. Từ mảnh đất Điện Biên xa xôi này, chúng em muốn gửi lời cảm ơn sâu sắc nhất vì sự tận tâm và tình yêu thương cô đã dành cho lớp.</p>
+            <br>
+            <p>Chúng em sẽ nhớ cô rất nhiều. Dù biết rằng khoảng cách từ Việt Nam đến Nga là nửa vòng trái đất và không biết khi nào mới có cơ hội gặp lại, nhưng hình ảnh của cô sẽ luôn ở trong trái tim chúng em. Chúc cô lên đường bình an, luôn hạnh phúc và gặt hái được nhiều thành công tại quê nhà.</p>
+            <br>
+            <p style="text-align: right; margin-top: 40px;">Với tất cả tình yêu và sự biết ơn,<br>Học sinh lớp tiếng Nga - Điện Biên</p>
+        </div>
+    </div>
+
+    <!-- Letter RU -->
+    <div class="letter" id="letter-ru">
+        <div class="close-btn" onclick="closeLetter()">×</div>
+        <h1>Прощальное письмо</h1>
+        <div class="content">
+            <p><strong>Дорогая Наталья Лисоченко!</strong></p>
+            <br>
+            <p>Сегодня нам очень грустно прощаться с Вами. Время, которое Вы провели с нами, обучая нас русскому языку, стало для нас бесценным подарком. Мы, Ваши ученики из Диенбьена, хотим искренне поблагодарить Вас за Ваше терпение и доброту.</p>
+            <br>
+            <p>Мы будем очень по Вам скучать. Мы не знаем, когда сможем встретиться снова, ведь Диенбьен и Россия находятся так далеко друг от друга, но память о Вас навсегда останется в наших сердцах. Желаем Вам счастливого пути, крепкого здоровья и больших успехов на Родине!</p>
+            <br>
+            <p style="text-align: right; margin-top: 40px;">С любовью и благодарностью,<br>Ваши ученики из Дьенбьена</p>
+        </div>
+    </div>
+
+    <!-- Letter EN -->
+    <div class="letter" id="letter-en">
+        <div class="close-btn" onclick="closeLetter()">×</div>
+        <h1>Farewell Letter</h1>
+        <div class="content">
+            <p><strong>Dear Ms. Natalya Lisochenko,</strong></p>
+            <br>
+            <p>It is hard for us to say goodbye today. The time you spent teaching us Russian has been a wonderful journey that we will never forget. From our hometown of Dien Bien, we want to express our deepest gratitude for your dedication and the inspiration you brought to our classroom.</p>
+            <br>
+            <p>We will miss you dearly. Although the distance between Dien Bien and Russia is vast, and we don't know when we might see each other again, you will always have a special place in our hearts. We wish you a safe journey home, good health, and all the best in your future endeavors.</p>
+            <br>
+            <p style="text-align: right; margin-top: 40px;">With all our love and gratitude,<br>Your Russian class students - Dien Bien</p>
+        </div>
+    </div>
+
+    <div class="footer">
+        Nhấn vào phong bì 💌 để mở lá thư • Click the envelope to open the letter
+    </div>
+
+    <script>
+        const envelope = document.getElementById('envelope');
+        const heartsContainer = document.getElementById('hearts');
+        let currentLang = 'vi';
+        let isOpen = false;
+
+        // Tab switching
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                currentLang = tab.getAttribute('data-lang');
+            });
+        });
+
+        // Create floating hearts
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.classList.add('heart');
+            heart.textContent = ['❤️', '💗', '💖', '💕', '💞'][Math.floor(Math.random() * 5)];
+            
+            const leftPos = Math.random() * 100;
+            heart.style.left = `${leftPos}vw`;
+            heart.style.animationDuration = `${Math.random() * 4 + 4}s`;
+            heart.style.fontSize = `${Math.random() * 18 + 22}px`;
+            heart.style.opacity = Math.random() * 0.6 + 0.7;
+            
+            heartsContainer.appendChild(heart);
+            
+            setTimeout(() => {
+                heart.remove();
+            }, 8000);
+        }
+
+        // Start continuous hearts when letter is opened
+        let heartInterval;
+
+        function startHearts() {
+            if (heartInterval) clearInterval(heartInterval);
+            heartInterval = setInterval(() => {
+                for (let i = 0; i < 3; i++) {
+                    setTimeout(createHeart, i * 150);
+                }
+            }, 600);
+        }
+
+        function stopHearts() {
+            if (heartInterval) {
+                clearInterval(heartInterval);
+                heartInterval = null;
+            }
+        }
+
+        // Open letter
+        function openLetter() {
+            if (isOpen) return;
+            isOpen = true;
+
+            // Hide envelope
+            envelope.style.transition = 'all 0.6s ease';
+            envelope.style.opacity = '0';
+            envelope.style.transform = 'translate(-50%, -50%) scale(0.6)';
+
+            // Show hearts
+            startHearts();
+
+            // Show the letter in current language
+            setTimeout(() => {
+                document.getElementById(`letter-${currentLang}`).classList.add('show');
+            }, 400);
+        }
+
+        // Close letter
+        function closeLetter() {
+            document.querySelectorAll('.letter').forEach(letter => {
+                letter.classList.remove('show');
+            });
+
+            // Show envelope again
+            setTimeout(() => {
+                envelope.style.transition = 'all 0.6s ease';
+                envelope.style.opacity = '1';
+                envelope.style.transform = 'translate(-50%, -50%)';
+                isOpen = false;
+                stopHearts();
+            }, 600);
+        }
+
+        // Click on envelope to open
+        envelope.addEventListener('click', openLetter);
+
+        // Keyboard support
+        document.addEventListener('keydown', (e) => {
+            if (e.key === "Escape") {
+                closeLetter();
+            }
+        });
+
+        // Auto create some hearts in background
+        setInterval(() => {
+            if (!isOpen) {
+                createHeart();
+            }
+        }, 1200);
+
+        // Initial hearts
+        for (let i = 0; i < 8; i++) {
+            setTimeout(createHeart, i * 200);
+        }
+    </script>
+</body>
+</html>
